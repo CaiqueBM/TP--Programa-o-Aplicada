@@ -33,24 +33,24 @@ struct tComandos {
         int tamanho;
     };
 
-    void inicializaLista(tLista* pLista) {
+    void inicializaLista(tLista* pLista) { //Função que inicializa uma lista
         pLista -> primeiro = NULL;
         pLista -> ultimo = NULL;
         pLista -> marcador = NULL;
         pLista -> tamanho = 0;
     }
 
-    int obterTamanho (tLista* pLista) {
+    int obterTamanho (tLista* pLista) { //Função que mostra o tamanho da lista
     return pLista -> tamanho;
-}
+    }
 
-    bool listaVazia (tLista* pLista) {
+    bool listaVazia (tLista* pLista) { //Função que mostra se a lista está vazia
         return pLista -> tamanho == 0;
     }
 
-    bool finalizaLista (tLista* pLista) {
+    bool finalizaLista (tLista* pLista) { //Função que mostra se a lista chegou ao fim
     return pLista -> marcador == NULL;
-}
+    }
 
     void incluirNoFim (tLista* pLista, float r1, float r2, int v) { //função que inclui um novo nó no fim
         tCircuito* no;
@@ -67,50 +67,116 @@ struct tComandos {
         pLista -> tamanho++;
     }
 
-        void operacao() {    //equivalente a main
+    void gravarNoArquivo(tLista* pLista) { //Função para gravar os dados no arquivo txt
+        ofstream enviar;
+        int cont = 1;
+        
+        pLista -> marcador = pLista -> primeiro;
+        
+        enviar.open("dados.txt", ios::out);
+        
+        while (!finalizaLista(pLista)) {
+            int r1 = pLista ->marcador ->resistencia1;
+            int r2 = pLista ->marcador ->resistencia2;
+            int v = pLista ->marcador ->tensao;
+            
+            if(cont <= 3) {
+                if (cont == 3) {
+                    enviar << r1 << endl;
+                    enviar << r2 << endl;
+                    enviar << v;
+                    cont = 1;
+                } else {
+                    enviar << r1 << endl;
+                    enviar << r2 << endl;
+                    enviar << v << endl;
+                    cont ++;
+                }
+
+            }
+
+            
+
+            pLista -> marcador = pLista -> marcador -> proximo;
+        }
+        enviar.close();
+    }
+
+        void operacaoGravar() {    //equivalente a main
             // Criando a lista encadeada
             tCircuito circuito;
             tLista* valores = new tLista;
             inicializaLista(valores);
-
-       // struct tCircuito valor[comando.n];
         
-        for (int i=0; i < n ; i++) {
-            cout << "--------- Item " << i + 1 << "----------" << endl;
-            cout << "Resistência 1: ";
-            cin >> circuito.resistencia1;
-            cout << "Resistência 2: ";
-            cin >> circuito.resistencia2;
-            cout << "Fonte de tensão: ";
-            cin >> circuito.tensao;
+            for (int i=0; i < n ; i++) {
+                cout << "--------- Item " << i + 1 << "----------" << endl;
+                cout << "Resistência 1: ";
+                cin >> circuito.resistencia1;
+                cout << "Resistência 2: ";
+                cin >> circuito.resistencia2;
+                cout << "Fonte de tensão: ";
+                cin >> circuito.tensao;
 
-            incluirNoFim(valores, circuito.resistencia1, circuito.resistencia2, circuito.tensao);
-            cout << "O tamanho da lista é: " << obterTamanho(valores) << endl;
-        }
-        gravarNoArquivo();
-
-        
-        }
-        void gravarNoArquivo () {
-            tLista* pLista;
-            ofstream enviar;
-
-            enviar.open("dados.txt", ios::out);
-
-            for (int i = 0; i < obterTamanho(pLista); i++) {
-                pLista -> marcador = pLista -> primeiro;
-
-                while (!finalizaLista(pLista)) {
-                    float r1 = pLista -> marcador -> resistencia1;
-                    float r2 = pLista -> marcador -> resistencia2;
-                    int v = pLista -> marcador -> tensao;
-                    enviar << r1 << endl;
-                    enviar << r2 << endl;
-                    enviar << v << endl;
-
-                    pLista -> marcador = pLista -> marcador -> proximo;
-                }
+                incluirNoFim(valores, circuito.resistencia1, circuito.resistencia2,     circuito.tensao);
+                cout << "O tamanho da lista é: " << obterTamanho(valores) << endl;
             }
-            enviar.close();
+        gravarNoArquivo(valores);
+
         }
+
+        void operacaoLer() {
+            ifstream receber;
+            int texto;
+            int cont = 1;
+
+            //pLista -> marcador = pLista -> primeiro;
+
+            receber.open("dados.txt", ios::in);
+
+            while(!receber.eof()) {
+
+                 /*   if(cont <= 2) {
+                        receber >> texto;
+                        cout << "Resistencia " << cont << ": "<< texto << endl;
+                        cont ++;
+                    } else if (cont == 3) {
+                        receber >> texto;
+                        cout << "Tensao: " << texto << endl;
+                        cont = 1;
+                    } */
+
+                    if (cont == 1) {
+                        receber >> texto;
+                        cin >> circuito.resistencia1;
+                        cont+;
+                    } else if ( cont == 2) {
+                        receber >> texto;
+                        cin >> circuito.resistencia1;
+                        cont++;
+                    } else if (cont == 3) {
+                        receber >> texto;
+                        cin >> circuito.resistencia1;
+                        cont = 1;
+                    }
+                
+                
+                
+                 
+                    
+                
+                
+            }
+
+            receber.close();
+
+
+
+
+
+        }
+
+
+
+        
+        
 };

@@ -13,9 +13,9 @@ int main() {
     if(verificacao == 1) {
         cout << "--------------- Gravar dados ---------------" << endl << "Quantos dados deseja armazenar? " << endl;
         cin >> comando.n; //Quantidade de dados a serem gravados
-        comando.operacao();
-        comando.gravarNoArquivo();
+        comando.operacaoGravar();
+        //comando.gravarNoArquivo();
     } else if (verificacao == 2) {
-        cout << endl;
+        comando.operacaoLer();
     }
 }
