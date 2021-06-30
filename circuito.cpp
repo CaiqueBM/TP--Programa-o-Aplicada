@@ -5,8 +5,8 @@
 using namespace std;
 
 struct tCircuito {    //Estrutura que guarda os dados
-    float resistencia1;
-    float resistencia2;
+    int resistencia1;
+    int resistencia2;
     int tensao;
     tCircuito* proximo;
 };
@@ -52,7 +52,7 @@ struct tComandos {
     return pLista -> marcador == NULL;
     }
 
-    void incluirNoFim (tLista* pLista, float r1, float r2, int v) { //função que inclui um novo nó no fim
+    void incluirNoFim (tLista* pLista, int r1, int r2, int v) { //função que inclui um novo nó no fim
         tCircuito* no;
         no = criaNo(r1,r2,v);
 
@@ -67,10 +67,12 @@ struct tComandos {
         pLista -> tamanho++;
     }
 
+    
+
     void gravarNoArquivo(tLista* pLista) { //Função para gravar os dados no arquivo txt
         ofstream enviar;
         int cont = 1;
-        
+    
         pLista -> marcador = pLista -> primeiro;
         
         enviar.open("dados.txt", ios::out);
@@ -92,15 +94,12 @@ struct tComandos {
                     enviar << v << endl;
                     cont ++;
                 }
-
             }
-
-            
-
             pLista -> marcador = pLista -> marcador -> proximo;
         }
         enviar.close();
     }
+
 
         void operacaoGravar() {    //equivalente a main
             // Criando a lista encadeada
@@ -118,65 +117,39 @@ struct tComandos {
                 cin >> circuito.tensao;
 
                 incluirNoFim(valores, circuito.resistencia1, circuito.resistencia2,     circuito.tensao);
-                cout << "O tamanho da lista é: " << obterTamanho(valores) << endl;
+                //cout << "O tamanho da lista é: " << obterTamanho(valores) << endl;
             }
         gravarNoArquivo(valores);
-
         }
 
         void operacaoLer() {
             ifstream receber;
-            int texto;
+            tCircuito circuito;
+            tLista* valores = new tLista;
+            inicializaLista(valores);
+            int dado;
             int cont = 1;
-
-            //pLista -> marcador = pLista -> primeiro;
 
             receber.open("dados.txt", ios::in);
 
             while(!receber.eof()) {
 
-                 /*   if(cont <= 2) {
-                        receber >> texto;
-                        cout << "Resistencia " << cont << ": "<< texto << endl;
-                        cont ++;
-                    } else if (cont == 3) {
-                        receber >> texto;
-                        cout << "Tensao: " << texto << endl;
-                        cont = 1;
-                    } */
-
                     if (cont == 1) {
-                        receber >> texto;
-                        cin >> circuito.resistencia1;
-                        cont+;
+                        receber >> dado;
+                        circuito.resistencia1 = dado;
+                        cont++;
                     } else if ( cont == 2) {
-                        receber >> texto;
-                        cin >> circuito.resistencia1;
+                        receber >> dado;
+                        circuito.resistencia2 = dado;
                         cont++;
                     } else if (cont == 3) {
-                        receber >> texto;
-                        cin >> circuito.resistencia1;
+                        receber >> dado;
+                        circuito.tensao = dado;
+                        incluirNoFim(valores, circuito.resistencia1, circuito.resistencia2, circuito.tensao);
+                        cout << "O tamanho da lista é: " << obterTamanho(valores) << endl;
                         cont = 1;
                     }
-                
-                
-                
-                 
-                    
-                
-                
             }
-
             receber.close();
-
-
-
-
-
-        }
-
-
-
-        
-        
+        }  
 };
