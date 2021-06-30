@@ -4,31 +4,18 @@
 using namespace std;
 
 int main() {
-    int verificacao; //0 = gravar / 1 = ler
-    //tCircuito valor2; //somente para gravar a quantidade de 
+    int verificacao;
     tComandos comando;
+    
+    cout << "--------------- Inicialização ---------------" << endl << "Digite 1 para gravar e 2 para ler um arquivo: ";
+    cin >> verificacao; //1 = gravar / 2 = ler
 
-    cout << "Digite 0 para gravar e 1 para ler um arquivo: " << endl;
-    cin >> verificacao;
-
-    if(verificacao == 0) {
-        cout << "Quantos dados deseja armazenar? " << endl;
-        cin >> comando.n;
-
-        struct tCircuito valor[comando.n];
-
-        for (int i=0; i < comando.n ; i++) {
-            cout << "--------- Item " << i + 1 << "----------" << endl;
-            cout << "Resistência 1: ";
-            cin >> valor[i].resistencia1;
-            cout << "Resistência 2: ";
-            cin >> valor[i].resistencia2;
-            cout << "Fonte de tensão: ";
-            cin >> valor[i].tensao;
-        }
-        
-    } else if (verificacao == 1) {
-
-        
-    } 
+    if(verificacao == 1) {
+        cout << "--------------- Gravar dados ---------------" << endl << "Quantos dados deseja armazenar? " << endl;
+        cin >> comando.n; //Quantidade de dados a serem gravados
+        comando.operacao();
+        comando.gravarNoArquivo();
+    } else if (verificacao == 2) {
+        cout << endl;
+    }
 }
