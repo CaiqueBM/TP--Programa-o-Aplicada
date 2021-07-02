@@ -67,7 +67,26 @@ struct tComandos {
         pLista -> tamanho++;
     }
 
-    
+    void imprimirLista(tLista* pLista) {
+        int cont = 1;
+        pLista -> marcador = pLista -> primeiro;
+        cout << "----------- Impressão -----------" << endl;
+
+        while (!finalizaLista(pLista)) {
+            cout << "----------- Item " << cont << " -----------" <<endl;
+            cout << "A resistencia 1 é: " << pLista ->marcador->resistencia1 << endl;
+            cout << "A resistencia 2 é: " << pLista ->marcador->resistencia2 << endl;
+            cout << "A tensão é: " << pLista ->marcador->tensao << endl;
+
+            if (cont == 3) {
+                cont = 0;
+            } else {
+                cont ++;
+            }
+
+            pLista -> marcador = pLista -> marcador -> proximo;
+        }
+    }
 
     void gravarNoArquivo(tLista* pLista) { //Função para gravar os dados no arquivo txt
         ofstream enviar;
@@ -116,8 +135,7 @@ struct tComandos {
                 cout << "Fonte de tensão: ";
                 cin >> circuito.tensao;
 
-                incluirNoFim(valores, circuito.resistencia1, circuito.resistencia2,     circuito.tensao);
-                //cout << "O tamanho da lista é: " << obterTamanho(valores) << endl;
+                incluirNoFim(valores, circuito.resistencia1, circuito.resistencia2, circuito.tensao);
             }
         gravarNoArquivo(valores);
         }
@@ -146,10 +164,10 @@ struct tComandos {
                         receber >> dado;
                         circuito.tensao = dado;
                         incluirNoFim(valores, circuito.resistencia1, circuito.resistencia2, circuito.tensao);
-                        cout << "O tamanho da lista é: " << obterTamanho(valores) << endl;
                         cont = 1;
                     }
             }
             receber.close();
+            imprimirLista(valores);
         }  
 };
